@@ -41,13 +41,23 @@ def webDataToDict_table(url):
                 last_title = line.find("td", attrs={"colspan":"2"}).text.strip()
             else:
                 name = line.find("td", attrs={"class":"tdd"}).text.strip().split("\n")[0]
+                name = name.encode('utf-8')
                 info = line.find("td", attrs={"class":"tdd"}).text.strip().split("\n")[1]
                 adress = info.split('ADRES :')[1].split('TELEFON :')[0]
+                adress = adress.encode('utf-8')
                 tel = info.split('ADRES :')[1].split('TELEFON :')[1].split('Fax: ')[0]
+                tel = tel.encode('utf-8')
                 fax = info.split('ADRES :')[1].split('TELEFON :')[1].split('Fax: ')[1]
-                coordinate = str(line.find("td", attrs={"class":"noBackground"}).find("span"))
-                coordinate = coordinate.split('onclick="goster')[1].split('" style=')[0]
-                line_info.append(last_title)
+                fax = fax.encode('utf-8')
+                coordinate_old = str(line.find("td", attrs={"class":"noBackground"}).find("span"))
+                coordinate_old = coordinate_old.split('onclick="goster')[1].split('" style=')[0]
+                coordinate = ''.join(c for c in coordinate_old.split(",")[0] if c.isdigit())
+                coordinate = coordinate + "." + ''.join(c for c in coordinate_old.split(",")[1] if c.isdigit())
+                coordinate = coordinate + ", " + ''.join(c for c in coordinate_old.split(",")[2] if c.isdigit())
+                coordinate = coordinate + "." + ''.join(c for c in coordinate_old.split(",")[3] if c.isdigit())
+                coordinate = coordinate.encode('utf-8')
+                title = last_title.encode('utf-8')
+                line_info.append(title)
                 line_info.append(name)
                 line_info.append(adress)
                 line_info.append(tel)
@@ -75,11 +85,7 @@ url1 = "http://www.igdas.istanbul/AdresVeTelefonlar?id=233&lang=tr&sc=4"
 list = webDataToDict_table(url1)
 for line in list:
     print line
-    coordinate = ''.join(c for c in line[-1].split(",")[0] if c.isdigit())
-    coordinate = coordinate + "." + ''.join(c for c in line[-1].split(",")[1] if c.isdigit())
-    coordinate = coordinate + ", " + ''.join(c for c in line[-1].split(",")[2] if c.isdigit())
-    coordinate = coordinate + "." + ''.join(c for c in line[-1].split(",")[3] if c.isdigit())
-    #print line[0],"####", line[1],"####", line[-1], "####", coordinate
+    print line[0],"####", line[1],"####", line[-1]
 
 url2 = "http://www.igdas.istanbul/IgdasSubeleri?id=236&lang=tr&sc=4"
 
