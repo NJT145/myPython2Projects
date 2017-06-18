@@ -32,9 +32,9 @@ def copy_sheet_xlsx(path, output_name):
     workbook.save(output_name)
 
 
-def read_xlsx(path):
+def read_xls(path):
     """
-    that converts xlsx file to dict as wb_dict[sheet.name][row_index][col_index][cell_value] .
+    that converts xls or xlsx file to dict as wb_dict[sheet.name][row_index][col_index][cell_value] .
     """
     wb = xlrd.open_workbook(path)
     wb_dict = {}
@@ -48,9 +48,9 @@ def read_xlsx(path):
     return wb_dict
 
 
-def write_xlsx(wb_dict, path):
+def write_xls(wb_dict, path):
     """
-    write a dict as wb_dict[sheet_name][row_index][col_index][cell_value] to a xlsx Excel file.
+    write a dict as wb_dict[sheet_name][row_index][col_index][cell_value] to a xls Excel file.
     """
     workbook = xlwt.Workbook()
     for sheet_name in wb_dict.keys():
@@ -67,11 +67,11 @@ print ""
 path_test_input = pwd+'\\test_input.xlsx'
 print path_test_input
 print ""
-print read_xlsx(path_test_input)
+print read_xls(path_test_input)
 print ""
 #copy_sheet_xlsx(path_testCopy_input, 'testCopy_output.xls')
 #print ""
 path_testWrite = pwd+'\\testWrite.xls'
-wb_dict = read_xlsx(path_test_input)
-#write_xlsx(wb_dict, path_testWrite)
+wb_dict = read_xls(path_test_input)
+#write_xls(wb_dict, path_testWrite)
 #print ""
